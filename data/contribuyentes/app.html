@@ -1,0 +1,173 @@
+<div class="main-content-inner">
+    <div class="breadcrumbs" id="breadcrumbs">
+		<script type="text/javascript">
+			try{ace.settings.check('breadcrumbs' , 'fixed')}catch(e){}
+		</script>
+
+		<ul class="breadcrumb">
+			<li>
+				<i class="ace-icon fa fa-home home-icon"></i>
+				<a href="#/">Inicio</a>
+			</li>
+			
+			<li class="active">Configuraciones</li>
+			<li class="active">Contribuyentes</li>
+		</ul>
+
+		<div class="nav-search" id="nav-search">
+			
+		</div>
+	</div>
+
+    <div class="page-content">
+		<div class="row">
+			<div class="col-sm-12">
+				<form class="form-horizontal" name="form_contribuyente" id="form_contribuyente">
+					<div class="row">
+						<div class="widget-box">
+							<div class="widget-body">
+								<div class="widget-header">
+									<h4 class="widget-title">Información del Contribuyente</h4>
+								</div>
+
+								<div class="widget-main">
+									<div class="row">
+										<div class="col-sm-12">
+											<div class="col-sm-9">											
+												<div class="form-group">	
+													<label class="control-label col-xs-12 col-sm-3 no-padding-right">Tipo Identificación:</label>
+													<div class="col-xs-12 col-sm-4">
+														<div class="clearfix">	
+															<select id="select_identificacion" name="select_identificacion" tabindex="8" class="chosen-select form-control" data-placeholder="Seleccione...">																													
+															</select>
+														</div>
+													</div>
+													<div class="col-xs-12 col-sm-5">
+														<div class="clearfix">	
+															<input type="text" name="txt_1" id="txt_1" placeholder="" tabindex="1" class="form-control" onkeyup="this.value = this.value.toUpperCase();" />
+															<input type="hidden" name="txt_0" id="txt_0" placeholder="" class="form-control"/>	
+														</div>
+													</div>													
+												</div>
+												<div class="form-group">
+													<label class="control-label col-xs-12 col-sm-3 no-padding-right">Nombre Comercial:</label>
+													<div class="col-xs-12 col-sm-9">
+														<div class="clearfix">
+															<input type="text" name="txt_5" id="txt_5" placeholder="" tabindex="1" class="form-control" onkeyup="this.value = this.value.toUpperCase();" />															
+														</div>
+													</div>
+												</div>																									
+												<div class="form-group">
+													<label class="control-label col-xs-12 col-sm-3 no-padding-right">Razon Social:</label>
+													<div class="col-xs-12 col-sm-9">
+														<div class="clearfix">
+															<input type="text" name="txt_2" id="txt_2" placeholder="" tabindex="3" class="form-control" onkeyup="this.value = this.value.toUpperCase();" />																
+														</div>
+													</div>
+												</div>		
+												<div class="form-group">
+													<label class="control-label col-xs-12 col-sm-3 no-padding-right">Dirección:</label>
+													<div class="col-xs-12 col-sm-9">
+														<div class="clearfix">
+															<input type="text" name="txt_3" id="txt_3" tabindex="5" placeholder="" class="form-control" />
+														</div>
+													</div>
+												</div>
+												<div class="form-group">
+													<label class="control-label col-xs-12 col-sm-3 no-padding-right">Teléfono:</label>
+													<div class="col-xs-12 col-sm-9">
+														<div class="clearfix">
+															<input type="text" name="txt_4" id="txt_4" tabindex="5" placeholder="" class="form-control" />
+														</div>
+													</div>
+												</div>
+												<div class="form-group">
+													<label class="control-label col-xs-12 col-sm-3 no-padding-right">Email:</label>
+													<div class="col-xs-12 col-sm-9">
+														<div class="clearfix">
+															<input type="email" name="txt_7" id="txt_7" tabindex="5" placeholder="" class="form-control" />
+														</div>
+													</div>
+												</div>											
+											</div>
+											<div class="col-sm-3">										
+												<div class="form-group">													
+													<div class="col-xs-12 col-sm-12">
+														<div class="clearfix">
+															<button type="button" id="btn_consultar" class="btn btn-sm btn-info col-sm-12">
+																Buscar Datos
+																<i class="ace-icon fa fa-arrow-right icon-on-right bigger-110"></i>
+															</button>
+														</div>
+													</div>
+												</div>												
+												<div class="form-group">													
+													<div class="col-xs-12 col-sm-12">
+														<div class="clearfix">
+															<select id="select_obligacion" name="select_obligacion" tabindex="8" class="chosen-select form-control" data-placeholder="Seleccione...">																													
+															<option value="SI">Obligado a llevar Contabilidad SI</option>
+															<option value="NO">Obligado a llevar Contabilidad NO</option>
+															</select>	
+														</div>
+													</div>
+												</div>												
+											</div>
+										</div>
+									</div>
+
+									<div class="row">
+										<div class="col-sm-12">
+											<div class="clearfix form-actions">
+												<div class="col-md-offset-3 col-md-9">
+													<button type="button" class="btn btn-info" name="btn_0" id="btn_0" data-toggle='tooltip' title = 'Registrar usuario'>
+														<i class="ace-icon fa fa-save bigger-110"></i>
+														Guardar
+													</button>
+
+													&nbsp; &nbsp;
+													<button type="button" class="btn btn-info" name="btn_3" id="btn_3" data-toggle='tooltip' title = 'Modificar usuario'>
+														<i class="ace-icon fa fa-pencil-square-o bigger-110"></i>
+														Modificar
+													</button>
+
+													&nbsp; &nbsp;
+													<button type="button" class="btn btn-info" name="btn_2" id="btn_2" data-toggle='tooltip' title = 'Buscar usuario'>
+														<i class="ace-icon fa fa-search bigger-110"></i>
+														Buscar
+													</button>
+
+													&nbsp; &nbsp;
+													<button type="button" class="btn btn-info" name="btn_1" id="btn_1" data-toggle='tooltip' title = 'Limpiar'>
+														<i class="ace-icon fa fa-refresh bigger-110"></i>
+														Actualizar
+													</button>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>	
+<div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" id="myModal">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+          <h4 class="modal-title">BUSCAR EMPRESAS</h4>
+        </div>
+        <div class="modal-body">
+            <table id="table"></table>
+			<div id="pager"></div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-info" data-dismiss="modal" data-toggle="tooltip" title="Cerrar ventana">Cerrar</button>
+        </div>
+      </div>
+    </div>
+</div>
