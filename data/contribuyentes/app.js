@@ -4,7 +4,7 @@ angular.module('scotchApp').controller('contribuyentesController', function ($sc
 	
 
 	jQuery(function($) {		
-
+		$("#loading2").css("display","none");
 		llenar_identificacion();		
 
 		$('[data-toggle="tooltip"]').tooltip(); 			
@@ -52,7 +52,7 @@ angular.module('scotchApp').controller('contribuyentesController', function ($sc
 				txt_5: {
 					required: true,					
 				},				
-				txt_7: {
+				txt_6: {
 					required: true,										
 				},				
 				select_identificacion: {
@@ -80,7 +80,7 @@ angular.module('scotchApp').controller('contribuyentesController', function ($sc
 					required: "Campo Obligatorio",					
 				},
 				
-				txt_7: {
+				txt_6: {
 					required: "Campo Obligatorio",					
 				},				
 				select_identificacion: {
@@ -192,25 +192,22 @@ angular.module('scotchApp').controller('contribuyentesController', function ($sc
 								time: 1000				
 							});
 							redireccionar();
-				    	}  				    	
-				    	
-				    	if(data == '3') {
-				    		$("#nombre_usuario").val("");
-				    		$("#nombre_usuario").focus();
+				    	}   				    	
+				    	if(data == '2') {				    						    	
 			        		$.gritter.add({
 								title: 'Mensaje',
 								text: 'Error.. el nombre del Contribuyente ya esta registrado <i class="ace-icon fa fa-spinner fa-spin green bigger-125"></i>',
 								time: 1000				
 							});							
 				    	}   
-				    	if(data == '4') {				    		
+				    	if(data == '3') {				    		
 			        		$.gritter.add({
 								title: 'Mensaje',
 								text: 'Error.. Intente nuevamente <i class="ace-icon fa fa-spinner fa-spin green bigger-125"></i>',
 								time: 1000				
 							});		
 							redireccionar();					
-				    	}                
+				    	}         
 			        },
 			        error: function (xhr, status, errorThrown) {
 			        	$("#loading").css("display","none");
@@ -252,16 +249,14 @@ angular.module('scotchApp').controller('contribuyentesController', function ($sc
 							});
 							redireccionar();
 				    	}   				    	
-				    	if(data == '3') {
-				    		$("#nombre_usuario").val("");
-				    		$("#nombre_usuario").focus();
+				    	if(data == '2') {				    						    	
 			        		$.gritter.add({
 								title: 'Mensaje',
-								text: 'Error.. el nombre de empresa ya esta registrado <i class="ace-icon fa fa-spinner fa-spin green bigger-125"></i>',
+								text: 'Error.. el nombre del Contribuyente ya esta registrado <i class="ace-icon fa fa-spinner fa-spin green bigger-125"></i>',
 								time: 1000				
 							});							
 				    	}   
-				    	if(data == '4') {				    		
+				    	if(data == '3') {				    		
 			        		$.gritter.add({
 								title: 'Mensaje',
 								text: 'Error.. Intente nuevamente <i class="ace-icon fa fa-spinner fa-spin green bigger-125"></i>',
@@ -302,23 +297,21 @@ angular.module('scotchApp').controller('contribuyentesController', function ($sc
 		        }
 		    });
 
-		    // buscador clientes
+		    // buscador contribuyentes
 		    jQuery(grid_selector).jqGrid({	        
 		        datatype: "xml",
-		        url: 'data/contribuyentes/xml_empresa.php',        
-		        colNames: ['ID','RAZON SOCIAL','NOMBRE COMERCIAL','DIRECCION','TELEFONO','RUC','PUNTO EMISION','ESTABLECIMIENTO', 'EMAIL', 'AUTORIZACION', 'CIUDAD'],
+		        url: 'data/contribuyentes/xml_contribuyente.php',        
+		        colNames: ['ID','idTipoIdentifacion','IDENTIFICACIÓN','EMAIL','RAZON SOCIAL','NOMBRE COMERCIAL','DIRECCIÓN','TELÉFONO', 'OBLIGADO'],
 		        colModel:[      
-		            {name:'id',index:'id', frozen:true, align:'left', search:false, hidden: true},
-		            {name:'razonSocial',index:'razonSocial',frozen : true, hidden: false, align:'left',search:true,width: ''},
-		            {name:'nombreComercial',index:'nombreComercial',frozen : true, hidden: true, align:'left',search:true,width: ''},		            
-		            {name:'direccion',index:'direccion',frozen : true, hidden: true, align:'left',search:false,width: ''},
-		            {name:'telefono',index:'telefono',frozen : true, hidden: true, align:'left',search:false,width: ''},		            
-		            {name:'ruc',index:'ruc',frozen : true, hidden: false, align:'left',search:false,width: ''},
-		            {name:'puntoEmision',index:'puntoEmision',frozen : true, hidden: false, align:'left',search:false,width: ''},		            
-		            {name:'establecimiento',index:'establecimiento',frozen : true, hidden: false, align:'left',search:false,width: ''},
-		            {name:'email',index:'email',frozen : true, hidden: true, align:'left',search:false,width: ''},
-		            {name:'autorizacion',index:'autorizacion',frozen : true, hidden: true, align:'left',search:false,width: ''},
-		            {name:'ciudad',index:'ciudad',frozen : true, hidden: false, align:'left',search:false,width: ''},
+		            {name:'id',index:'txt_0', frozen:true, align:'left', search:false, hidden: true},
+		            {name:'idTipoIdentifacion',index:'select_identificacion',frozen : true, hidden: true, align:'left',search:true,width: ''},
+		            {name:'identificacion',index:'txt_1',frozen : true, hidden: false, align:'left',search:true,width: ''},		            
+		            {name:'email',index:'txt_6',frozen : true, hidden: true, align:'left',search:false,width: ''},
+		            {name:'razonSocial',index:'txt_3',frozen : true, hidden: false, align:'left',search:false,width: ''},		            
+		            {name:'nombreComercial',index:'txt_2',frozen : true, hidden: false, align:'left',search:false,width: ''},
+		            {name:'direccion',index:'txt_4',frozen : true, hidden: true, align:'left',search:false,width: ''},		            
+		            {name:'telefono',index:'txt_5',frozen : true, hidden: true, align:'left',search:false,width: ''},
+		            {name:'obligacion',index:'obligacion',frozen : true, hidden: true, align:'left',search:false,width: ''},		            
 		        ],          
 		        rowNum: 10,       
 		        width:600,
@@ -346,27 +339,22 @@ angular.module('scotchApp').controller('contribuyentesController', function ($sc
 	            	var ret = jQuery(grid_selector).jqGrid('getRowData',gsr);
 
 	            	$('#txt_0').val(ret.id);	            	
-	            	$('#txt_1').val(ret.nombreComercial);
-	            	$('#txt_2').val(ret.razonSocial);
-	            	$('#txt_3').val(ret.direccion);
-	            	$('#txt_4').val(ret.telefono);	            	
-	            	$('#txt_5').val(ret.ruc);	            	
-	            	$("#select_emision").val(ret.puntoEmision);
-	            	$("#select_emision").trigger("chosen:updated");
-	            	$("#select_establecimiento").val(ret.establecimiento);
-	            	$("#select_establecimiento").trigger("chosen:updated");
-	            	$('#txt_6').val(ret.autorizacion);
-	            	$('#txt_8').val(ret.ciudad);
-	            	$('#txt_7').val(ret.email);
-	            	
-	
-		            $('#clave').attr('disabled',true);
-		            $('#clave2').attr('disabled',true);
+	            	$('#txt_1').val(ret.identificacion);
+	            	$('#txt_2').val(ret.nombreComercial);
+	            	$('#txt_3').val(ret.razonSocial);
+	            	$('#txt_4').val(ret.direccion);	            	
+	            	$('#txt_5').val(ret.telefono);	            	
+	            	$('#txt_6').val(ret.email);	
+	            	$('#select_identificacion').val(ret.idTipoIdentifacion);
+					$("#select_identificacion").trigger("chosen:updated");
+					$('#select_obligacion').val(ret.obligacion);
+					$("#select_obligacion").trigger("chosen:updated");
+		            
 		            $('#myModal').modal('hide'); 
 		            $('#btn_0').attr('disabled', true); 
 		            $('#btn_3').attr('disabled', false); 	            
 		        },		        
-		        caption: "LISTA EMPRESAS"
+		        caption: "LISTA DE CONTRIBUYENTES"
 		    });
 	
 		    $(window).triggerHandler('resize.jqGrid');//cambiar el tamaño para hacer la rejilla conseguir el tamaño correcto		    
@@ -602,29 +590,53 @@ angular.module('scotchApp').controller('contribuyentesController', function ($sc
 				},     			       			        
 		        success: function (data) {
 		        	$("#loading2").css("display","none");	
-		        	/*if(data[0][0] == 1){ ///ruc del sri 1091732935001
-		        		$("#txt_6").val(data[0][2]);
-		        		if(data[0][9] != '')
-		        			$("#txt_7").val(data[0][9]);	
+		        	if(data[0][0] == 2){ ///ruc del sri 1091732935001
+		        		$("#txt_2").val(data[0][2]);
+		        		if(data[0][9] == "")
+		        			$("#txt_3").val(data[0][2]);
 		        		else
-		        			$("#txt_7").val(data[0][2]);				        		
-		        		
-		        		$("#txt_8").val(data[1][8]);		        						        		
-		        		$("#select_obligacion").select2('val', data[0][21]).trigger("change");
-		        	}else{
-		        		if(data[0] == 0){ ///datos de la base
-
-		        		}
-		        	}*/		        	
+		        			$("#txt_3").val(data[0][9]);
+		        		$("#txt_4").val(data[1][8]);		        		
+		        		$("#select_obligacion").val(data[0][21]);		        		
+		        		$("#select_obligacion").trigger("chosen:updated");
+		        	}
+		        	else{
+		        		if(data[0] == 1){
+		        			bootbox.dialog({
+					        	title: "Información",
+								message: "El número de RUC ingresado no existe. Ingrese los datos manualmente", 
+								buttons: {
+									"success" : {
+										"label": '<i class="fa fa-check"></i> Aceptar',
+										"className": 'btn-primary'
+									}
+								}
+							});		
+		        		}else{
+		        			if(data[0] == 0){
+			        			$("#txt_0").val(data[1]);
+			        			$("#txt_2").val(data[6]);
+			        			$("#txt_3").val(data[5]);
+			        			$("#txt_4").val(data[7]);
+			        			$("#txt_5").val(data[8]);			        					        		
+			        			$("#txt_6").val(data[4]);				        		
+				        		$("#select_obligacion").val(data[9]);	
+				        		$("#select_obligacion").trigger("chosen:updated");
+				        		$('#btn_3').attr('disabled', false);				
+				        		$('#btn_0').attr('disabled', true);				
+			        		}
+		        		}		        		
+		        	}
 		        },
 		        error: function (xhr, status, errorThrown) {
 		        	$("#loading2").css("display","none");		
 			        bootbox.dialog({
-						message: "Error! Hubo un problema al generar la información. Vuelve a Intentarlo", 
+			        	title: "Información",
+						message: "Error! Hubo un problema al generar la información. Llene todos los datos y vuelve a Intentarlo", 
 						buttons: {
 							"success" : {
-								"label" : "Aceptar",
-								"className" : "btn-sm btn-primary"
+								"label": '<i class="fa fa-check"></i> Aceptar',
+								"className": 'btn-primary'
 							}
 						}
 					});	

@@ -58,7 +58,7 @@
   		<script src="data/tarifaRetencion/app.js"></script>
   		<script src="data/comprobanteRetencion/app.js"></script>  	
   		<script src="data/empresa/app.js"></script>
-  		<script src="data/contribuyentes/app.js"></script>
+  		<script src="data/contribuyentes/app.js"></script>  		
 
 	</head>
 
@@ -273,6 +273,23 @@
 							</li>
 						</ul>
 					</li>
+					<li ng-class = "{'active open': $route.current.activetab == 'comprobanteRetencion'}">
+						<a href="" class="dropdown-toggle">
+							<i class="menu-icon fa fa-file-text-o"></i>
+							Comp. Retención
+							<b class="arrow fa fa-angle-down"></b>
+						</a>
+						<b class="arrow"></b>
+						<ul class="submenu">
+							<li ng-class="{active: $route.current.activetab == 'comprobanteRetencion'}">
+								<a href="#/comprobanteRetencion" target="">
+									<i class="menu-icon fa fa-caret-right"></i>
+									Comp. Retención
+								</a>
+								<b class="arrow"></b>
+							</li>
+						</ul>
+					</li>
 				</ul><!-- /.nav-list -->
 
 				<div class="sidebar-toggle sidebar-collapse" id="sidebar-collapse">
@@ -306,7 +323,7 @@
 						<div class="row">
 							<div class="col-xs-12">
 								<!-- PAGE CONTENT BEGINS -->
-								<div class="row">
+								<div class="row">								
 								</div><!-- /.row -->
 								<!-- PAGE CONTENT ENDS -->
 							</div><!-- /.col -->
@@ -363,7 +380,8 @@
 
 		<script src="dist/js/grid.locale-en.js"></script>
 		<script src="dist/js/chosen.jquery.min.js"></script>
-
+		<script src="dist/js/bootbox.min.js"></script>
+		<script src="dist/js/fuelux/fuelux.wizard.min.js"></script>
 		<!-- inline scripts related to this page -->
 		<script type="text/javascript">
 			jQuery(function($) {			
@@ -390,8 +408,135 @@
 			.panel-body .radio label,.panel-body .checkbox label { display:block; }
 			.well-sm {padding: 6px !important}
 			.well {margin-bottom: 5px !important; border-radius: 3px}
+			
+			.loading2 {
+			  position: fixed;
+			  z-index: 999;
+			  height: 2em;
+			  width: 2em;
+			  overflow: show;
+			  margin: auto;
+			  top: 0;
+			  left: 0;
+			  bottom: 0;
+			  right: 0;
+			}
 
-		
+			/* Transparent Overlay */
+			.loading2:before {
+			  content: '';
+			  display: block;
+			  position: fixed;
+			  top: 0;
+			  left: 0;
+			  width: 100%;
+			  height: 100%;
+			  background-color: rgba(0,0,0,0.7);
+			}
+
+			/* :not(:required) hides these rules from IE9 and below */
+			.loading2:not(:required) {
+			  /* hide "loading2..." text */
+			  font: 0/0 a;
+			  color: transparent;
+			  text-shadow: none;
+			  background-color: transparent;
+			  border: 0;
+			}
+
+			.loading2:not(:required):after {
+			  content: '';
+			  display: block;
+			  font-size: 10px;
+			  width: 1em;
+			  height: 1em;
+			  margin-top: -0.5em;
+			  -webkit-animation: spinner 1500ms infinite linear;
+			  -moz-animation: spinner 1500ms infinite linear;
+			  -ms-animation: spinner 1500ms infinite linear;
+			  -o-animation: spinner 1500ms infinite linear;
+			  animation: spinner 1500ms infinite linear;
+			  border-radius: 0.5em;
+			  -webkit-box-shadow: rgba(0, 0, 0, 0.75) 1.5em 0 0 0, rgba(0, 0, 0, 0.75) 1.1em 1.1em 0 0, rgba(0, 0, 0, 0.75) 0 1.5em 0 0, rgba(0, 0, 0, 0.75) -1.1em 1.1em 0 0, rgba(0, 0, 0, 0.5) -1.5em 0 0 0, rgba(0, 0, 0, 0.5) -1.1em -1.1em 0 0, rgba(0, 0, 0, 0.75) 0 -1.5em 0 0, rgba(0, 0, 0, 0.75) 1.1em -1.1em 0 0;
+			  box-shadow: rgba(0, 0, 0, 0.75) 1.5em 0 0 0, rgba(0, 0, 0, 0.75) 1.1em 1.1em 0 0, rgba(0, 0, 0, 0.75) 0 1.5em 0 0, rgba(0, 0, 0, 0.75) -1.1em 1.1em 0 0, rgba(0, 0, 0, 0.75) -1.5em 0 0 0, rgba(0, 0, 0, 0.75) -1.1em -1.1em 0 0, rgba(0, 0, 0, 0.75) 0 -1.5em 0 0, rgba(0, 0, 0, 0.75) 1.1em -1.1em 0 0;
+			}
+
+			/* Animation */
+
+			@-webkit-keyframes spinner {
+			  0% {
+			    -webkit-transform: rotate(0deg);
+			    -moz-transform: rotate(0deg);
+			    -ms-transform: rotate(0deg);
+			    -o-transform: rotate(0deg);
+			    transform: rotate(0deg);
+			  }
+			  100% {
+			    -webkit-transform: rotate(360deg);
+			    -moz-transform: rotate(360deg);
+			    -ms-transform: rotate(360deg);
+			    -o-transform: rotate(360deg);
+			    transform: rotate(360deg);
+			  }
+			}
+			@-moz-keyframes spinner {
+			  0% {
+			    -webkit-transform: rotate(0deg);
+			    -moz-transform: rotate(0deg);
+			    -ms-transform: rotate(0deg);
+			    -o-transform: rotate(0deg);
+			    transform: rotate(0deg);
+			  }
+			  100% {
+			    -webkit-transform: rotate(360deg);
+			    -moz-transform: rotate(360deg);
+			    -ms-transform: rotate(360deg);
+			    -o-transform: rotate(360deg);
+			    transform: rotate(360deg);
+			  }
+			}
+			@-o-keyframes spinner {
+			  0% {
+			    -webkit-transform: rotate(0deg);
+			    -moz-transform: rotate(0deg);
+			    -ms-transform: rotate(0deg);
+			    -o-transform: rotate(0deg);
+			    transform: rotate(0deg);
+			  }
+			  100% {
+			    -webkit-transform: rotate(360deg);
+			    -moz-transform: rotate(360deg);
+			    -ms-transform: rotate(360deg);
+			    -o-transform: rotate(360deg);
+			    transform: rotate(360deg);
+			  }
+			}
+			@keyframes spinner {
+			  0% {
+			    -webkit-transform: rotate(0deg);
+			    -moz-transform: rotate(0deg);
+			    -ms-transform: rotate(0deg);
+			    -o-transform: rotate(0deg);
+			    transform: rotate(0deg);
+			  }
+			  100% {
+			    -webkit-transform: rotate(360deg);
+			    -moz-transform: rotate(360deg);
+			    -ms-transform: rotate(360deg);
+			    -o-transform: rotate(360deg);
+			    transform: rotate(360deg);
+			  }
+			}
+			tfoot tr td{
+				font-weight: 700;
+				border-color: #ddd;
+				color: #707070;
+			}	
+			input.error{border:1px solid #FF0000 !important; }
+			label.error,div.error{
+			    font-weight:normal;
+			    color:#FF0000 !important;
+			}
 	  	</style>
 	</body>
 </html>

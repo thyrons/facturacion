@@ -25,8 +25,9 @@
                 return 0; //Si no se pudo conectar
             else{                            
                 $Resultado=mysql_query($Consulta,$Valor); 
-                return $Resultado;// retorna si fue afectada una fila
-            }
+                mysql_close($Valor);
+                return $Resultado;// retorna si fue afectada una fila                
+            }            
         }
     }    
 ?>

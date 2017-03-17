@@ -2,35 +2,76 @@
 	if(!isset($_SESSION)){
         session_start();        
     }
-	include '../../admin/conex.php';
-	include '../../admin/consultaSRI.php';
-	
-	$conexion_2 = conectarse();
-	$resultados = array();
-	//error_reporting(0);			
 
+	include_once('../../admin/class.php');
+	include '../../admin/consultaSRI.php';
+	$class = new constante();
+	$id = $class->idz();
+	$fecha = $class->fecha_hora();	
+	//error_reporting(0);				
+	
+	if (isset($_POST['llenar_tipoComprobante']) == "llenar_tipoComprobante") {			
+		$sql = "SELECT id,codigo, nombre FROM tipoComprobante order by id asc";
+		$sql = $class->consulta($sql);					
+		print'<option value=""> </option>';
+		while ($row = $class->fetch_array($sql)) {
+			print '<option value="'.$row[0].'" data-foo="'.$row[1].'" >'.$row[2].'</option>';
+		}
+	}			
+	if (isset($_POST['llenar_codigoRetencion']) == "llenar_codigoRetencion") {			
+		$sql = "SELECT id,codigo, nombre FROM tipoRetencion order by id asc";
+		$sql = $class->consulta($sql);					
+		print'<option value=""> </option>';
+		while ($row = $class->fetch_array($sql)) {
+			print '<option value="'.$row[0].'" data-foo="'.$row[1].'" >'.$row[2].'</option>';
+		}		
+	}		
+	if (isset($_POST['llenar_Retencion']) == "llenar_Retencion") {			
+		$sql = "SELECT id,codigo,nombre,descripcion FROM tarifaRetencion WHERE idTarifa = '".$_POST['id']."'";
+		$sql = $class->consulta($sql);					
+		print'<option value=""> </option>';
+		while ($row = $class->fetch_array($sql)) {
+			print '<option value="'.$row[0].'" data-foo="'.$row[1].'" >'.$row[2].'</option>';
+		}		
+	}		
+	if (isset($_POST['llenar_empresa']) == "llenar_empresa") {			
+		$sql = "SELECT id,razonSocial,ruc,puntoEmision,establecimiento, ciudad FROM empresa order by id asc";
+		$sql = $class->consulta($sql);					
+		print'<option value=""> </option>';
+		while ($row = $class->fetch_array($sql)) {
+			print '<option value="'.$row[0].'" data-foo="'.$row[2].'" data-PE="'.$row[3].'" data-E="'.$row[4].'">'.$row[1].' '.$row[5].'</option>';
+		}
+	}	
+	if (isset($_POST['llenar_identificacion']) == "llenar_identificacion") {			
+		$sql = "SELECT id,codigo, nombre FROM tipoIdentificacion order by id asc";
+		$sql = $class->consulta($sql);					
+		print'<option value=""> </option>';
+		while ($row = $class->fetch_array($sql)) {
+			print '<option value="'.$row[0].'" data-foo="'.$row[1].'">'.$row[2].'</option>';
+		}
+	}	
 	if (isset($_POST['buscarDatos']) == "buscarDatos") {			
 		
 		$lista = array();		
-		$sql = "SELECT * FROM dbo.contribuyente WHERE identificacion = '".$_POST['txt_2']."'";
-		$sql = sqlsrv_query($conexion_2,$sql);				
-		while ($row = sqlsrv_fetch_object($sql))   {
+		$sql = "SELECT * FROM contribuyente WHERE identificacion = '".$_POST['txt_2']."'";
+		$sql = $class->consulta($sql);					
+		while ($row = $class->fetch_array($sql)) {
 			$lista[] = 0;
-			$lista[] = $row->id;
-			$lista[] = $row->idTipoIdentificacion;
-			$lista[] = $row->identificacion;
-			$lista[] = $row->email;
-			$lista[] = $row->razonSocial;
-			$lista[] = $row->nombreComercial;
-			$lista[] = $row->direccion;
-			$lista[] = $row->telefono;			
-			$lista[] = $row->obligado;			
+			$lista[] = $row[0];
+			$lista[] = $row[1];
+			$lista[] = $row[2];
+			$lista[] = $row[3];
+			$lista[] = $row[4];
+			$lista[] = $row[5];
+			$lista[] = $row[6];
+			$lista[] = $row[7];			
+			$lista[] = $row[8];			
 		}		
 
 		if(count($lista) > 0){
-			print_r(json_encode($lista));
+			print_r(json_encode($lista)); /// 0 info de la base
 		}else{
-			if($_POST['txt_3'] == '1' ){
+			if($_POST['txt_3'] == '04' ){
 				$fa=fopen("../../admin/cookie.txt","w+");
 				fwrite($fa,"");
 				fclose($fa);
@@ -45,16 +86,16 @@
 				if(property_exists ($datos,'mensaje')){//verificacios si existe el ruc ingresado
 					$total = json_encode($datos->mensaje);//respuesta de error
 					$acu[]=1;
-					print_r(json_encode($acu));
+					print_r(json_encode($acu)); ///1 error del ruc
 				}else{			
 					$html = str_get_html($datos);
-					$arr[]=1;
+					$arr[]=2; /// datos del ruc
 					foreach($html->find('table tr td') as $e){
 					    $arr[] =utf8_encode(trim($e->innertext));
 					}
 					//print_r(json_encode($arr));
 					$html = str_get_html($estab);
-					$arr_1[]=1;
+					$arr_1[]=2; // datos del ruc
 					foreach($html->find('table tr td') as $e){				
 						/*if(utf8_encode(trim($e->innertext)) == '\t' || utf8_encode(trim($e->innertext)) == '&nbsp;'){
 					    	$arr_1[] = utf8_encode(trim($e->innertext));
@@ -70,43 +111,11 @@
 					fclose($fa);
 				}	
 			}else{
-				$arr_2[] = 2;	
+				$arr_2[] = 4; // no existe	
 				print_r(json_encode($arr_2));
 			}
 		}
 		
-	}
-	if (isset($_POST['llenar_identificacion']) == "llenar_identificacion") {			
-		$resultado = "SELECT id,codigo, nombre FROM dbo.tipoIdentificacion order by id asc";
-		$resultado = sqlsrv_query($conexion_2,$resultado);
-		print'<option value="">&nbsp;</option>';
-		while ($row = sqlsrv_fetch_object($resultado))   {
-			print '<option value="'.$row->id.'" data-foo="'.$row->codigo.'">'.$row->nombre.'</option>';
-		}
-	}		
-	if (isset($_POST['llenar_tipoComprobante']) == "llenar_tipoComprobante") {			
-		$resultado = "SELECT id,codigo, nombre FROM dbo.tipoComprobante order by id asc";
-		$resultado = sqlsrv_query($conexion_2,$resultado);
-		print'<option value="">&nbsp;</option>';
-		while ($row = sqlsrv_fetch_object($resultado))   {
-			print '<option value="'.$row->id.'" data-foo="'.$row->codigo.'">'.$row->nombre.'</option>';
-		}
-	}			
-	if (isset($_POST['llenar_codigoRetencion']) == "llenar_codigoRetencion") {			
-		$resultado = "SELECT id,codigo, nombre FROM dbo.tipoRetencion order by id asc";
-		$resultado = sqlsrv_query($conexion_2,$resultado);
-		print'<option value="">&nbsp;</option>';
-		while ($row = sqlsrv_fetch_object($resultado))   {
-			print '<option value="'.$row->id.'" data-foo="'.$row->codigo.'">'.$row->nombre.'</option>';
-		}
-	}		
-	if (isset($_POST['llenar_Retencion']) == "llenar_Retencion") {			
-		$resultado = "SELECT id,codigo,nombre,descripcion FROM dbo.tarifaRetencion WHERE idTarifa = '".$_POST['id']."'";
-		$resultado = sqlsrv_query($conexion_2,$resultado);
-		print'<option value="">&nbsp;</option>';
-		while ($row = sqlsrv_fetch_object($resultado))   {
-			print '<option value="'.$row->id.'" data-foo="'.$row->nombre.'">'.$row->codigo.'</option>';
-		}
 	}				
 	if (isset($_POST['enviarDatos']) == "enviarDatos") {					
 		$s0 = $_POST['s0'];

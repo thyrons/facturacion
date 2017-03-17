@@ -12,32 +12,33 @@
 
 	if (isset($_POST['btn_guardar']) == "btn_guardar") {		
 
-		$sql = "SELECT * FROM empresa where ruc = '".$_POST['txt_5']."' and puntoEmsion = '".$_POST['select_emision']."' and establecimiento = '".$_POST['select_establecimiento']."'";
+		$sql = "SELECT * FROM contribuyente where idTipoIdentificacion = '".$_POST['select_identificacion']."' and identificacion = '".$_POST['txt_1']."'";
 		
 		$sql = $class->consulta($sql);			
 		if($class->num_rows($sql) > 0) {		
-			echo 3;///Empresa repetida
+			echo 2;///Contribuyente repetido
 		}else{
-			$sql = "INSERT INTO empresa VALUES ('".$id."','".$_POST['txt_2']."','".$_POST['txt_1']."','".$_POST['txt_3']."','".$_POST['txt_4']."','".$_POST['txt_5']."','".$_POST['select_emision']."','".$_POST['select_establecimiento']."','".$_POST['txt_7']."','".$_POST['txt_6']."','".$_POST['txt_8']."');";
+			$sql = "INSERT INTO contribuyente VALUES ('".$id."','".$_POST['select_identificacion']."','".$_POST['txt_1']."','".$_POST['txt_6']."','".$_POST['txt_3']."','".$_POST['txt_2']."','".$_POST['txt_4']."','".$_POST['txt_5']."','".$_POST['select_obligacion']."','1');";
 			if($class->consulta($sql)){
 				echo 1;	//Empresa Guardado			
 			}else{
-				echo 4;	//Error en la base
+				echo 3;	//Error en la base
 			}			
 		}								
 	}
 
-	if (isset($_POST['btn_modificar']) == "btn_modificar") {			
-		$sql = "SELECT * FROM empresa where ruc = '".$_POST['txt_5']."' and puntoEmision = '".$_POST['select_emision']."' and establecimiento = '".$_POST['select_establecimiento']."' AND NOT id = '".$_POST['txt_0']."'";				
+	if (isset($_POST['btn_modificar']) == "btn_modificar") {	
+		$sql = "SELECT * FROM contribuyente where idTipoIdentificacion = '".$_POST['select_identificacion']."' and identificacion = '".$_POST['txt_1']."' AND NOT id = '".$_POST['txt_0']."'";						
 		$sql = $class->consulta($sql);				
 		if($class->num_rows($sql) > 0) {		
-			echo 3;///Nombre Empresa Repetida
+			echo 2;///Nombre Contribuyente Repetido
 		}else{
-			$sql = "UPDATE empresa SET razonSocial='".$_POST['txt_2']."',nombreComercial='".$_POST['txt_1']."',direccion='".$_POST['txt_3']."',telefono='".$_POST['txt_4']."',ruc='".$_POST['txt_5']."',puntoEmision='".$_POST['select_emision']."',establecimiento='".$_POST['select_establecimiento']."',email='".$_POST['txt_7']."',autorizacion='".$_POST['txt_6']."',ciudad='".$_POST['txt_8']."' where id='".$_POST['txt_0']."'";			
+			$sql = "UPDATE contribuyente SET idTipoIdentificacion='".$_POST['select_identificacion']."', identificacion='".$_POST['txt_1']."', email='".$_POST['txt_6']."', razonSocial='".$_POST['txt_3']."', nombreComercial='".$_POST['txt_2']."', direccion='".$_POST['txt_4']."', telefono='".$_POST['txt_5']."', obligado='".$_POST['select_obligacion']."' WHERE id = '".$_POST['txt_0']."'";
+			//echo $sql;
 			if($class->consulta($sql)){
-				echo 1;	//Usuario Guardado			
+				echo 1;	//Usuario Modificado			
 			}else{
-				echo 4;	//Error en la base
+				echo 3;	//Error en la base
 			}		
 		}							
 	}		
@@ -69,7 +70,7 @@
 		}		
 
 		if(count($lista) > 0){
-			print_r(json_encode($lista));
+			print_r(json_encode($lista)); /// 0 info de la base
 		}else{
 			if($_POST['txt_3'] == '04' ){
 				$fa=fopen("../../admin/cookie.txt","w+");
@@ -86,16 +87,16 @@
 				if(property_exists ($datos,'mensaje')){//verificacios si existe el ruc ingresado
 					$total = json_encode($datos->mensaje);//respuesta de error
 					$acu[]=1;
-					print_r(json_encode($acu));
+					print_r(json_encode($acu)); ///1 error del ruc
 				}else{			
 					$html = str_get_html($datos);
-					$arr[]=1;
+					$arr[]=2; /// datos del ruc
 					foreach($html->find('table tr td') as $e){
 					    $arr[] =utf8_encode(trim($e->innertext));
 					}
 					//print_r(json_encode($arr));
 					$html = str_get_html($estab);
-					$arr_1[]=1;
+					$arr_1[]=2; // datos del ruc
 					foreach($html->find('table tr td') as $e){				
 						/*if(utf8_encode(trim($e->innertext)) == '\t' || utf8_encode(trim($e->innertext)) == '&nbsp;'){
 					    	$arr_1[] = utf8_encode(trim($e->innertext));
@@ -111,7 +112,7 @@
 					fclose($fa);
 				}	
 			}else{
-				$arr_2[] = 2;	
+				$arr_2[] = 4; // no existe	
 				print_r(json_encode($arr_2));
 			}
 		}

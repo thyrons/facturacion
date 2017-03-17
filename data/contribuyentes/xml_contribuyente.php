@@ -15,7 +15,7 @@
     
     $count = 0;
 
-    $resultado = $class->consulta("SELECT  COUNT(*) AS count FROM empresa");         
+    $resultado = $class->consulta("SELECT  COUNT(*) AS count FROM contribuyente");         
     while ($row = $class->fetch_array($resultado)) {
         $count = $count + $row[0];    
     }    
@@ -32,18 +32,17 @@
         $start = 0;
     
     if ($search == 'false') {
-        $SQL = "SELECT id, razonSocial, nombreComercial, direccion, telefono, ruc, puntoEmision, establecimiento, email, autorizacion, ciudad FROM empresa ORDER BY $sidx $sord limit $limit offset $start";
+        $SQL = "SELECT id, idTipoIdentificacion, identificacion, email,razonSocial, nombreComercial,direccion,telefono, obligado FROM contribuyente ORDER BY $sidx $sord limit $limit offset $start";
     } else {
         $campo = $_GET['searchField'];
       
         if ($_GET['searchOper'] == 'eq') {
-            $SQL = "SELECT id, razonSocial, nombreComercial, direccion, telefono, ruc, puntoEmision, establecimiento, email, autorizacion, ciudad FROM empresa WHERE $campo = '".$_GET['searchString']."' ORDER BY $sidx $sord limit $limit offset $start";
+            $SQL = "SELECT id, idTipoIdentificacion, identificacion, email,razonSocial, nombreComercial,direccion,telefono, obligadoFROM contribuyente WHERE $campo = '".$_GET['searchString']."' ORDER BY $sidx $sord limit $limit offset $start";
         }         
         if ($_GET['searchOper'] == 'cn') {
-            $SQL = "SELECT id, razonSocial, nombreComercial, direccion, telefono, ruc, puntoEmision, establecimiento, email, autorizacion, ciudad FROM empresa WHERE $campo like '%$_GET[searchString]%' ORDER BY $sidx $sord limit $limit offset $start";
+            $SQL = "SELECT id, idTipoIdentificacion, identificacion, email,razonSocial, nombreComercial,direccion,telefono, obligado FROM contribuyente WHERE $campo like '%$_GET[searchString]%' ORDER BY $sidx $sord limit $limit offset $start";
         }
     }  
-
     
     $resultado = $class->consulta($SQL);  
     $ss ='';
@@ -65,8 +64,6 @@
             $s .= "<cell>" . $row[6] . "</cell>";            
             $s .= "<cell>" . $row[7] . "</cell>";            
             $s .= "<cell>" . $row[8] . "</cell>";
-            $s .= "<cell>" . $row[9] . "</cell>";
-            $s .= "<cell>" . $row[10] . "</cell>";
             $s .= "</row>";
         }
     $s .= "</rows>";
