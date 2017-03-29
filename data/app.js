@@ -81,6 +81,12 @@ dcapp.config(function($routeProvider) {
             controller  : 'empresaController',
             activetab: 'empresa'
         }) 
+        // route de empresa
+        .when('/nroDocumento', {
+            templateUrl : 'data/nroDocumento/app.html',
+            controller  : 'nroDocumentoController',
+            activetab: 'nroDocumento'
+        }) 
         // route de contribuyentes
         .when('/contribuyentes', {
             templateUrl : 'data/contribuyentes/app.html',

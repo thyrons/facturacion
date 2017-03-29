@@ -58,6 +58,7 @@
   		<script src="data/tarifaRetencion/app.js"></script>
   		<script src="data/comprobanteRetencion/app.js"></script>  	
   		<script src="data/empresa/app.js"></script>
+  		<script src="data/nroDocumento/app.js"></script>  
   		<script src="data/contribuyentes/app.js"></script>  		
 
 	</head>
@@ -169,7 +170,7 @@
 
 						<b class="arrow"></b>
 					</li>
-					<li ng-class = "{'active open': $route.current.activetab == 'usuarios' || $route.current.activetab == 'niveles' || $route.current.activetab == 'empresa' || $route.current.activetab == 'contribuyentes'}">
+					<li ng-class = "{'active open': $route.current.activetab == 'usuarios' || $route.current.activetab == 'niveles' || $route.current.activetab == 'empresa' || $route.current.activetab == 'contribuyentes' || $route.current.activetab == 'nroDocumento'}">
 						<a href="" class="dropdown-toggle">
 							<i class="menu-icon fa fa-cogs"></i>
 							Configuraciones
@@ -195,6 +196,13 @@
 								<a href="#/empresa" target="">
 									<i class="menu-icon fa fa-caret-right"></i>
 									Empresa
+								</a>
+								<b class="arrow"></b>
+							</li>
+							<li ng-class="{active: $route.current.activetab == 'nroDocumento'}">
+								<a href="#/nroDocumento" target="">
+									<i class="menu-icon fa fa-caret-right"></i>
+									Nro. Documento
 								</a>
 								<b class="arrow"></b>
 							</li>	

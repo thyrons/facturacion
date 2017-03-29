@@ -61,12 +61,21 @@ angular.module('scotchApp').controller('empresaController', function ($scope, $r
 				txt_8: {
 					required: true,					
 				},
+				txt_9: {
+					required: true,					
+				},
+				txt_13: {
+					required: false,					
+				},
 				select_emision: {
 					required: true				
 				},
 				select_establecimiento: {
 					required: true				
 				},				
+				select_obligacion: {
+					required: true				
+				},	
 			},
 			messages: {				
 				txt_1: { 	
@@ -94,12 +103,19 @@ angular.module('scotchApp').controller('empresaController', function ($scope, $r
 				txt_8: {
 					required: "Campo Obligatorio",					
 				},
+				txt_9: {
+					required: "Campo Obligatorio",					
+				},
 				select_emision: {
 					required: "Campo Obligatorio",
 				},
 				select_establecimiento: {
 					required: "Campo Obligatorio",
 				},
+				select_obligacion: {
+					required: "Campo Obligatorio",
+				},
+				
 			},
 			//para prender y apagar los errores
 			highlight: function (e) {
@@ -289,7 +305,7 @@ angular.module('scotchApp').controller('empresaController', function ($scope, $r
 		    jQuery(grid_selector).jqGrid({	        
 		        datatype: "xml",
 		        url: 'data/empresa/xml_empresa.php',        
-		        colNames: ['ID','RAZON SOCIAL','NOMBRE COMERCIAL','DIRECCION','TELEFONO','RUC','PUNTO EMISION','ESTABLECIMIENTO', 'EMAIL', 'AUTORIZACION', 'CIUDAD'],
+		        colNames: ['ID','RAZON SOCIAL','NOMBRE COMERCIAL','DIRECCION','TELEFONO','RUC','PUNTO EMISION','ESTABLECIMIENTO', 'EMAIL', 'AUTORIZACION', 'CIUDAD','DIRECCIÓN ESTABLECIMIENTO','OBLIGADO','CONTRIBUYENTE'],
 		        colModel:[      
 		            {name:'id',index:'id', frozen:true, align:'left', search:false, hidden: true},
 		            {name:'razonSocial',index:'razonSocial',frozen : true, hidden: false, align:'left',search:true,width: ''},
@@ -302,6 +318,9 @@ angular.module('scotchApp').controller('empresaController', function ($scope, $r
 		            {name:'email',index:'email',frozen : true, hidden: true, align:'left',search:false,width: ''},
 		            {name:'autorizacion',index:'autorizacion',frozen : true, hidden: true, align:'left',search:false,width: ''},
 		            {name:'ciudad',index:'ciudad',frozen : true, hidden: false, align:'left',search:false,width: ''},
+		            {name:'direccionEstablecimiento',index:'direccionEstablecimiento',frozen : true, hidden: true, align:'left',search:false,width: ''},		            
+		            {name:'obligacion',index:'obligacion',frozen : true, hidden: true, align:'left',search:false,width: ''},
+		            {name:'contribuyente',index:'contribuyente',frozen : true, hidden: true, align:'left',search:false,width: ''},
 		        ],          
 		        rowNum: 10,       
 		        width:600,
@@ -341,10 +360,10 @@ angular.module('scotchApp').controller('empresaController', function ($scope, $r
 	            	$('#txt_6').val(ret.autorizacion);
 	            	$('#txt_8').val(ret.ciudad);
 	            	$('#txt_7').val(ret.email);
-	            	
-	
-		            $('#clave').attr('disabled',true);
-		            $('#clave2').attr('disabled',true);
+	            	$('#txt_9').val(ret.direccionEstablecimiento);		            
+	            	$('#txt_13').val(ret.contribuyente);		            
+	            	$('#select_obligacion').val(ret.obligacion);		            
+	            	$("#select_obligacion").trigger("chosen:updated");
 		            $('#myModal').modal('hide'); 
 		            $('#btn_0').attr('disabled', true); 
 		            $('#btn_3').attr('disabled', false); 	            

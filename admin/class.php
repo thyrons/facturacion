@@ -74,5 +74,9 @@
       }
       return $pass;
     }
+
+    function generarClave($fecha,$tipoComprobante,$ruc,$ambiente,$serie,$numeroDocumento,$fecha, $tipoEmision ){
+
+    }
   }  
 ?>

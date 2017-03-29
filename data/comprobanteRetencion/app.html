@@ -13,9 +13,7 @@
 
 			<li class="active">Comprobantes de Retención</li>
 			<li class="active">Comprobante de Retención</li>
-		</ul><!-- /.breadcrumb -->
-
-		
+		</ul><!-- /.breadcrumb -->		
 	</div>
 
     <div class="page-content">
@@ -177,9 +175,28 @@
 																	</div>
 																</div>		
 																<div class="form-group">													
-																	<div class="col-xs-12 col-sm-12">
+																	<div class="col-xs-12 col-sm-7">
 																		<div class="clearfix">
-																			<select id="select_ejercicio" name="select_ejercicio" tabindex="11" class="chosen-select form-control" data-placeholder="Ejercicio Fiscal">
+																			<select id="select_mes" name="select_mes" tabindex="11" class="chosen-select form-control" data-placeholder="Mes Fiscal">
+																				<option value=""> </option>
+																				<option value="01">Enero</option>
+																				<option value="02">Febrero</option>
+																				<option value="03">Marzo</option>
+																				<option value="04">Abril</option>
+																				<option value="05">Mayo</option>
+																				<option value="06">Junio</option>
+																				<option value="07">Julio</option>
+																				<option value="08">Agosto</option>
+																				<option value="09">Septiembre</option>
+																				<option value="10">Octubre</option>
+																				<option value="11">Noviembre</option>
+																				<option value="12">Diciembre</option>																				
+																			</select>	
+																		</div>
+																	</div>
+																	<div class="col-xs-12 col-sm-5">
+																		<div class="clearfix">
+																			<select id="select_ejercicio" name="select_ejercicio" tabindex="11" class="chosen-select form-control" data-placeholder="Año Fiscal">
 																				<option value=""> </option>
 																				<option value="2016">2016</option>
 																				<option value="2017">2017</option>
@@ -208,7 +225,7 @@
 														<div class="col-sm-12 col-md-3">															
 															<div class="form-group">																
 																<div class="col-xs-12 col-sm-12">
-																	<select id="select_codigoRetencion" name="select_codigoRetencion" tabindex="13" class="chosen-select form-control" data-placeholder="Seleccione una Empresa">								
+																	<select id="select_codigoRetencion" name="select_codigoRetencion" tabindex="13" class="chosen-select form-control" data-placeholder="Código de Retención">								
 																		<option value="" selected=""></option>
 																	</select>																	
 																</div>
@@ -217,7 +234,7 @@
 														<div class="col-xs-12 col-sm-3">
 															<div class="form-group">		
 																<div class="col-xs-12 col-sm-12">
-																	<select id="select_Retencion" name="select_Retencion" tabindex="14" class="chosen-select form-control" data-placeholder="Seleccione una Empresa">								
+																	<select id="select_Retencion" name="select_Retencion" tabindex="14" class="chosen-select form-control" data-placeholder="Código de Impuesto">
 																		<option value="" selected=""></option>
 																	</select>
 																</div>
@@ -233,18 +250,46 @@
 														<div class="col-xs-12 col-sm-2">
 															<div class="form-group">	
 																<div class="col-xs-12 col-sm-12">															
-																	<input class="form-control" id="txt_13" name="txt_13" type="text" tabindex="16" placeholder="Base Imponible">
+																	<input class="form-control" id="txt_12" name="txt_12" type="text" tabindex="16" placeholder="Base Imponible">
 																</div>
 															</div>
 														</div>
 														<div class="col-xs-12 col-sm-2">
 															<div class="form-group">	
 																<div class="col-xs-12 col-sm-12">			
-																	<button type="button" id="btn_agregar_d" class="btn btn-sm btn-info col-sm-12">
+																	<button type="button" id="btn_agregar" class="btn btn-sm btn-info col-sm-12">
 																		Agregar
 																		<i class="ace-icon fa fa-arrow-right icon-on-right bigger-110"></i>
 																	</button>			
 																</div>
+															</div>
+														</div>
+														<div class="form-group">
+															<div class="col-sm-12 table-responsive">																
+																<table id="tabla_comprobante" class="table table-striped table-bordered table-hover">
+																	<thead>
+																		<tr>
+																			<th style="display:none;">idCodigo</th>																			
+																			<th>Ejercicio Fiscal</th>
+																			<th style="display:none;">idCodigoImpuesto</th>
+																			<th>Codigo Impuesto</th>
+																			<th>Base Imponible</th>
+																			<th style="display:none;">idRetencion</th>
+																			<th>Impuesto</th>
+																			<th>% Retención</th>
+																			<th>Valor Retenido</th>
+																			<th></th>
+																		</tr>
+																	</thead>
+																	<tfoot>
+																	    <tr>
+																	      <td colspan="8" align=right >Total de la Reteneción $</td>
+																	      <td align=center>0.00</td>
+																	    </tr>
+																	  </tfoot>
+																	<tbody>																		
+																	</tbody>																		
+																</table>
 															</div>
 														</div>
 													</form>
@@ -273,9 +318,4 @@
             </div>
         </div>                          
     </div>
-</div>
-
-
-
-
-	   
+</div> 

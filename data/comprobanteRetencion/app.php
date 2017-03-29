@@ -1,13 +1,14 @@
 <?php 
 	if(!isset($_SESSION)){
         session_start();        
-    }
-
+    }    
+    $codDoc = '07';
+    $ambiente = '1';
 	include_once('../../admin/class.php');
-	include '../../admin/consultaSRI.php';
-	$class = new constante();
-	$id = $class->idz();
-	$fecha = $class->fecha_hora();	
+	include '../../admin/consultaSRI.php';	
+	include 'generarPDF.php';	
+	$class = new constante();	
+	$fecha = $class->fecha();	
 	//error_reporting(0);				
 	
 	if (isset($_POST['llenar_tipoComprobante']) == "llenar_tipoComprobante") {			
@@ -28,10 +29,11 @@
 	}		
 	if (isset($_POST['llenar_Retencion']) == "llenar_Retencion") {			
 		$sql = "SELECT id,codigo,nombre,descripcion FROM tarifaRetencion WHERE idTarifa = '".$_POST['id']."'";
+		echo $sql;
 		$sql = $class->consulta($sql);					
 		print'<option value=""> </option>';
 		while ($row = $class->fetch_array($sql)) {
-			print '<option value="'.$row[0].'" data-foo="'.$row[1].'" >'.$row[2].'</option>';
+			print '<option value="'.$row[0].'" data-foo="'.$row[2].'" >'.$row[1] .' '.$row[3].'</option>';
 		}		
 	}		
 	if (isset($_POST['llenar_empresa']) == "llenar_empresa") {			
@@ -51,7 +53,6 @@
 		}
 	}	
 	if (isset($_POST['buscarDatos']) == "buscarDatos") {			
-		
 		$lista = array();		
 		$sql = "SELECT * FROM contribuyente WHERE identificacion = '".$_POST['txt_2']."'";
 		$sql = $class->consulta($sql);					
@@ -114,8 +115,7 @@
 				$arr_2[] = 4; // no existe	
 				print_r(json_encode($arr_2));
 			}
-		}
-		
+		}		
 	}				
 	if (isset($_POST['enviarDatos']) == "enviarDatos") {					
 		$s0 = $_POST['s0'];
@@ -126,10 +126,7 @@
 		$s5 = $_POST['s5'];		
 		$s6 = $_POST['s6'];
 		$s7 = $_POST['s7'];
-		$s8 = $_POST['s8'];
-		$s9 = $_POST['s9'];
-		$s10 = $_POST['s10'];
-		$s11 = $_POST['s11'];
+		$s8 = $_POST['s8'];		
 		////////////detalles del comprobante////////
 		$arreglo1 = explode('|', $s0);
 		$arreglo2 = explode('|', $s1);
@@ -139,29 +136,63 @@
 		$arreglo6 = explode('|', $s5);	
 		$arreglo7 = explode('|', $s6);	
 		$arreglo8 = explode('|', $s7);	
-		$arreglo9 = explode('|', $s8);	
-		$arreglo10 = explode('|', $s9);	
-		$arreglo11 = explode('|', $s10);	
-		$arreglo12 = explode('|', $s11);	
-		
+		$arreglo9 = explode('|', $s8);			
 		$cont = 0;
-		$sql = "select * from dbo.contribuyente where idTipoIdentificacion = '".$_POST['select_identificacion']."' and identificacion = '".$_POST['txt_2']."'";
-		$sql = sqlsrv_query($conexion_2,$sql);		
-		while ($row = sqlsrv_fetch_object($sql)){
-			$cont = $row->id;
-		}
-		///datos del contribuyente///		
+
+		$sql = "select id from contribuyente where idTipoIdentificacion = '".$_POST['select_identificacion']."' and identificacion = '".$_POST['txt_1']."'";
+		$sql = $class->consulta($sql);
+		while ($row = $class->fetch_array($sql)) {
+			$cont = $row[0];
+		}							
+		///datos del contribuyente///				
 		if($cont == 0){
-			$sql = "insert into dbo.contribuyente VALUES ('".$_POST['select_identificacion']."','".$_POST['txt_2']."','".$_POST['txt_12']."','".$_POST['txt_6']."','".$_POST['txt_7']."','".$_POST['txt_8']."','".$_POST['txt_3']."','".$_POST['select_obligacion']."','1')";
-			sqlsrv_query($conexion_2,$sql);					
-			$sql = "SELECT IDENT_CURRENT('dbo.comprobanteRetencion')";
-			$sql = sqlsrv_query($conexion_2,$sql);					
-			$cont = sqlsrv_fetch_object($sql);
+			$id_contribuyente = $class->idz();
+			$temp = $id_contribuyente;			
+			$sql = "insert into contribuyente VALUES ('".$id_contribuyente."','".$_POST['select_identificacion']."','".$_POST['txt_1']."','".$_POST['txt_6']."','".$_POST['txt_3']."','".$_POST['txt_2']."','".$_POST['txt_4']."','".$_POST['txt_5']."','".$_POST['select_obligacion']."','1')";
+			if($class->consulta($sql)){
+				$data = 1;	//Contribuyente Guardado			
+			}else{
+				$data = 3;	//Error en la base
+			}	
 		}else{
-			$sql = "update dbo.contribuyente set idTipoIdentificacion='".$_POST['select_identificacion']."',identificacion='".$_POST['txt_2']."',email='".$_POST['txt_12']."',razonSocial='".$_POST['txt_6']."',nombreComercial='".$_POST['txt_7']."',direccion='".$_POST['txt_8']."',telefono='".$_POST['txt_3']."',obligado='".$_POST['select_obligacion']."' where id='".$cont."'";
-			sqlsrv_query($conexion_2,$sql);					
+			$sql = "update contribuyente set idTipoIdentificacion='".$_POST['select_identificacion']."',identificacion='".$_POST['txt_1']."',email='".$_POST['txt_6']."',razonSocial='".$_POST['txt_3']."',nombreComercial='".$_POST['txt_2']."',direccion='".$_POST['txt_4']."',telefono='".$_POST['txt_5']."',obligado='".$_POST['select_obligacion']."' where id='".$cont."'";
+			$temp = $cont;
+			if($class->consulta($sql)){
+				$data = 2;	//Contribuyente Modificado			
+			}else{
+				$data = 3;	//Error en la base
+			}
 		}
 		////datos del comprobante///
-		$sql = "insert into dbo.comprobanteRetencion VALUES('".$cont."','".$_POST['txt_4']."','".''."','".$_POST['select_comprobante']."','".$_POST['txt_9']."','','','','','".$_POST['select_establecimiento']."','".$_POST['select_puntoEmision']."','')";
-	}				
+		///1 GUARDADO
+		///2 GENERADO
+		///3 VALIDADO
+		///4 RECHAZADO
+		$id = $class->idz();		
+		$sql = "select ruc from empresa where id = '".$_POST['select_empresa']."'";
+		$sql = $class->consulta($sql);
+		while ($row = $class->fetch_array($sql)) {
+			$ruc = $row[0];
+		}	
+		echo generarClave($_POST['txt_9'],$codDoc,$ruc,$ambiente,$_POST['txt_7'].''.$_POST['txt_8'],)
+		$sql = "insert into comprobanteRetencion VALUES('".$id."','".$temp."','".$_POST['txt_9']."','".$fecha."','".$_POST['select_comprobante']."','".$_POST['txt_10']."','1','','','','".$_POST['txt_8']."','".$_POST['txt_7']."','".$_POST['select_mes'] .'/'. $_POST['select_ejercicio']."','','','".$_POST['select_empresa']."')";
+		//echo $sql;
+		if($class->consulta($sql)){
+			$data = 1;	//Cabecera generada			
+		}else{
+			$data = 3;	//Error en la base			
+		}
+		if($data == 1){
+			for ($i=1; $i < sizeof($arreglo1); $i++) { 
+				$id_detalles = $class->idz();		
+				$sql = "insert into detalleComprobanteRetencion VALUES('".$id_detalles."','".$id."','".$arreglo3[$i]."','".$arreglo5[$i]."','".$arreglo6[$i]."','".$arreglo8[$i]."','".$arreglo9[$i]."')";
+				if($class->consulta($sql)){
+					$data = 1;	//detalle generada			
+					generarPDF($id);
+				}else{
+					$data = 3;	//Error en la base			
+				}
+			}	
+		}				
+	}			
 ?>	
