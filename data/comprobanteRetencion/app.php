@@ -4,6 +4,7 @@
     }    
     $codDoc = '07';
     $ambiente = '1';
+    $emision = '1';//normal cuando generamos la clave
 	include_once('../../admin/class.php');
 	include '../../admin/consultaSRI.php';	
 	include 'generarPDF.php';	
@@ -29,7 +30,7 @@
 	}		
 	if (isset($_POST['llenar_Retencion']) == "llenar_Retencion") {			
 		$sql = "SELECT id,codigo,nombre,descripcion FROM tarifaRetencion WHERE idTarifa = '".$_POST['id']."'";
-		echo $sql;
+		//echo $sql;
 		$sql = $class->consulta($sql);					
 		print'<option value=""> </option>';
 		while ($row = $class->fetch_array($sql)) {
@@ -174,8 +175,17 @@
 		while ($row = $class->fetch_array($sql)) {
 			$ruc = $row[0];
 		}	
-		echo generarClave($_POST['txt_9'],$codDoc,$ruc,$ambiente,$_POST['txt_7'].''.$_POST['txt_8'],)
-		$sql = "insert into comprobanteRetencion VALUES('".$id."','".$temp."','".$_POST['txt_9']."','".$fecha."','".$_POST['select_comprobante']."','".$_POST['txt_10']."','1','','','','".$_POST['txt_8']."','".$_POST['txt_7']."','".$_POST['select_mes'] .'/'. $_POST['select_ejercicio']."','','','".$_POST['select_empresa']."')";
+		/////////
+		$secuencialComprobante = 0;
+		$sql = "select  * from nroDocumento where idEmpresa = '".$_POST['select_empresa']."'";
+		$sql = $class->consulta($sql);
+		while ($row = $class->fetch_array($sql)) {
+			$secuencialComprobante = $row[5];
+		}	
+		$secuencialComprobante = $secuencialComprobante + 1;
+		
+		////////		
+		$sql = "insert into comprobanteRetencion VALUES('".$id."','".$temp."','".$_POST['txt_9']."','','".$_POST['select_comprobante']."','".$_POST['txt_10']."','1','','','".$_POST['txt_8']."','".$_POST['txt_7']."','".$_POST['select_mes'] .'/'. $_POST['select_ejercicio']."','".$secuencialComprobante."','1','".$_POST['select_empresa']."')";		
 		//echo $sql;
 		if($class->consulta($sql)){
 			$data = 1;	//Cabecera generada			
@@ -186,13 +196,21 @@
 			for ($i=1; $i < sizeof($arreglo1); $i++) { 
 				$id_detalles = $class->idz();		
 				$sql = "insert into detalleComprobanteRetencion VALUES('".$id_detalles."','".$id."','".$arreglo3[$i]."','".$arreglo5[$i]."','".$arreglo6[$i]."','".$arreglo8[$i]."','".$arreglo9[$i]."')";
-				if($class->consulta($sql)){
+				if($class->consulta($sql)){						
 					$data = 1;	//detalle generada			
-					generarPDF($id);
+					
 				}else{
 					$data = 3;	//Error en la base			
 				}
-			}	
+			}
+			if($data == 1){
+				$sql = "UPDATE nroDocumento SET nroRetencion = '".$secuencialComprobante."' where idEmpresa = '".$_POST['select_empresa']."'";				
+				$class->consulta($sql);					
+				$clave = $class->generarClave($_POST['txt_9'],$codDoc,$ruc,$ambiente,$_POST['txt_7'].''.$_POST['txt_8'],$secuencialComprobante,$_POST['txt_9'],$emision);
+				$sql = "UPDATE comprobanteretencion SET claveAcceso = '".$clave."' where id = '".$id."'";				
+				$class->consulta($sql);	
+				generarPDF($id);
+			}
 		}				
 	}			
 ?>	

@@ -76,11 +76,11 @@ angular.module('scotchApp').controller('nroDocumentoController', function ($scop
 			var respuesta = $('#form_Documentos').valid();			
 			if (respuesta == true) {
 				//$('#btn_0').attr('disabled', true);
-				var submit = "btn_gardar";
+				var submit = "btn_guardar";
 				var formulario = $("#form_Documentos").serialize();
 				$("#loading").css("display","block");
 				$.ajax({
-			        url: "data/empresa/app.php",
+			        url: "data/nroDocumento/app.php",
 			        data: formulario + "&btn_guardar=" + submit,
 			        type: "POST",
 			        async: true,
@@ -90,21 +90,11 @@ angular.module('scotchApp').controller('nroDocumentoController', function ($scop
 			        	if(data == '1') {
 			        		$.gritter.add({
 								title: 'Mensaje',
-								text: 'Registro Agregado correctamente <i class="ace-icon fa fa-spinner fa-spin green bigger-125"></i>',
+								text: 'Registro Modificado correctamente <i class="ace-icon fa fa-spinner fa-spin green bigger-125"></i>',
 								time: 1000				
 							});
 							redireccionar();
-				    	}  				    	
-				    	
-				    	if(data == '3') {
-				    		$("#nombre_usuario").val("");
-				    		$("#nombre_usuario").focus();
-			        		$.gritter.add({
-								title: 'Mensaje',
-								text: 'Error.. el nombre de Empresa ya esta registrado <i class="ace-icon fa fa-spinner fa-spin green bigger-125"></i>',
-								time: 1000				
-							});							
-				    	}   
+				    	}  				    					    					    	
 				    	if(data == '4') {				    		
 			        		$.gritter.add({
 								title: 'Mensaje',
@@ -156,27 +146,21 @@ angular.module('scotchApp').controller('nroDocumentoController', function ($scop
 		    // buscador clientes
 		    jQuery(grid_selector).jqGrid({	        
 		        datatype: "xml",
-		        url: 'data/empresa/xml_empresa.php',        
-		        colNames: ['ID','RAZON SOCIAL','NOMBRE COMERCIAL','DIRECCION','TELEFONO','RUC','PUNTO EMISION','ESTABLECIMIENTO', 'EMAIL', 'AUTORIZACION', 'CIUDAD','DIRECCIÓN ESTABLECIMIENTO','OBLIGADO','CONTRIBUYENTE'],
+		        url: 'data/nroDocumento/xml_empresa.php',        
+		        colNames: ['ID','iDEmpresa','RAZON SOCIAL','FACTURA','NOTA CRÉDITO','NOTA DEBITO', 'COMPROBANTE DE RETENCIÓN','GUÍA DE REMISIÓN'],
 		        colModel:[      
 		            {name:'id',index:'id', frozen:true, align:'left', search:false, hidden: true},
-		            {name:'razonSocial',index:'razonSocial',frozen : true, hidden: false, align:'left',search:true,width: ''},
-		            {name:'nombreComercial',index:'nombreComercial',frozen : true, hidden: true, align:'left',search:true,width: ''},		            
-		            {name:'direccion',index:'direccion',frozen : true, hidden: true, align:'left',search:false,width: ''},
-		            {name:'telefono',index:'telefono',frozen : true, hidden: true, align:'left',search:false,width: ''},		            
-		            {name:'ruc',index:'ruc',frozen : true, hidden: false, align:'left',search:false,width: ''},
-		            {name:'puntoEmision',index:'puntoEmision',frozen : true, hidden: false, align:'left',search:false,width: ''},		            
-		            {name:'establecimiento',index:'establecimiento',frozen : true, hidden: false, align:'left',search:false,width: ''},
-		            {name:'email',index:'email',frozen : true, hidden: true, align:'left',search:false,width: ''},
-		            {name:'autorizacion',index:'autorizacion',frozen : true, hidden: true, align:'left',search:false,width: ''},
-		            {name:'ciudad',index:'ciudad',frozen : true, hidden: false, align:'left',search:false,width: ''},
-		            {name:'direccionEstablecimiento',index:'direccionEstablecimiento',frozen : true, hidden: true, align:'left',search:false,width: ''},		            
-		            {name:'obligacion',index:'obligacion',frozen : true, hidden: true, align:'left',search:false,width: ''},
-		            {name:'contribuyente',index:'contribuyente',frozen : true, hidden: true, align:'left',search:false,width: ''},
+		            {name:'idEmpresa',index:'idEmpresa',frozen : true, hidden: true, align:'left',search:true,width: ''},
+		            {name:'razonSocial',index:'razonSocial',frozen : true, hidden: false, align:'left',search:true,width: ''},		            
+		            {name:'nroFactura',index:'nroFactura',frozen : true, hidden: false, align:'left',search:true,width: ''},		            
+		            {name:'notaCredito',index:'notaCredito',frozen : true, hidden: false, align:'left',search:false,width: ''},
+		            {name:'notaDebito',index:'notaDebito',frozen : true, hidden: false, align:'left',search:false,width: ''},		            
+		            {name:'retencion',index:'retencion',frozen : true, hidden: false, align:'left',search:false,width: ''},		            
+		            {name:'guiaRemision',index:'guiaRemision',frozen : true, hidden: false, align:'left',search:false,width: ''},
 		        ],          
 		        rowNum: 10,       
-		        width:600,
-		        shrinkToFit: true,
+		        //width:600,
+		        shrinkToFit: false,
 		        height:200,
 		        rowList: [10,20,30],
 		        pager: pager_selector,        
@@ -200,25 +184,14 @@ angular.module('scotchApp').controller('nroDocumentoController', function ($scop
 	            	var ret = jQuery(grid_selector).jqGrid('getRowData',gsr);
 
 	            	$('#txt_0').val(ret.id);	            	
-	            	$('#txt_1').val(ret.nombreComercial);
-	            	$('#txt_2').val(ret.razonSocial);
-	            	$('#txt_3').val(ret.direccion);
-	            	$('#txt_4').val(ret.telefono);	            	
-	            	$('#txt_5').val(ret.ruc);	            	
-	            	$("#select_emision").val(ret.puntoEmision);
-	            	$("#select_emision").trigger("chosen:updated");
-	            	$("#select_establecimiento").val(ret.establecimiento);
-	            	$("#select_establecimiento").trigger("chosen:updated");
-	            	$('#txt_6').val(ret.autorizacion);
-	            	$('#txt_8').val(ret.ciudad);
-	            	$('#txt_7').val(ret.email);
-	            	$('#txt_9').val(ret.direccionEstablecimiento);		            
-	            	$('#txt_13').val(ret.contribuyente);		            
-	            	$('#select_obligacion').val(ret.obligacion);		            
-	            	$("#select_obligacion").trigger("chosen:updated");
-		            $('#myModal').modal('hide'); 
-		            $('#btn_0').attr('disabled', true); 
-		            $('#btn_3').attr('disabled', false); 	            
+	            	$('#txt_1').val(ret.razonSocial);
+	            	$('#txt_2').val(ret.nroFactura);
+	            	$('#txt_4').val(ret.notaCredito);
+	            	$('#txt_3').val(ret.notaDebito);	            	
+	            	$('#txt_5').val(ret.retencion);
+	            	$('#txt_6').val(ret.guiaRemision);
+	            	$('#myModal').modal('hide'); 
+
 		        },		        
 		        caption: "LISTA EMPRESAS"
 		    });

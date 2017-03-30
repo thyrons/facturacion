@@ -4,4 +4,5 @@
     }
 	include_once('../../admin/class.php');
 	$class=new constante();
+	//echo $id = $class->idz();		
 ?>

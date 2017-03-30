@@ -3,5 +3,5 @@
 	define("SERVIDOR","localhost");
 	define("USUARIO","root");
 	define("CLAVE","root");
-	define("PUERTO",3606);	
+	define("PUERTO",3606);		
 ?>

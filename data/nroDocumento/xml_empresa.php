@@ -15,7 +15,7 @@
     
     $count = 0;
 
-    $resultado = $class->consulta("SELECT  COUNT(*) AS count FROM empresa");         
+    $resultado = $class->consulta("SELECT  COUNT(*) AS count FROM nrodocumento");         
     while ($row = $class->fetch_array($resultado)) {
         $count = $count + $row[0];    
     }    
@@ -32,15 +32,15 @@
         $start = 0;
     
     if ($search == 'false') {
-        $SQL = "SELECT id, razonSocial, nombreComercial, direccion, telefono, ruc, puntoEmision, establecimiento, email, autorizacion, ciudad,direccionEstablecimiento,obligacion,contribuyente FROM empresa ORDER BY $sidx $sord limit $limit offset $start";
+        $SQL = "Select ND.id, ND.idEmpresa, E.razonSocial,E.ciudad, ND.nroFactura, ND.nroNotaCredito, ND.nroNotaDebito, ND.nroRetencion, ND.nroGuia from nrodocumento ND inner join empresa E on ND.idEmpresa = E.id ORDER BY $sidx $sord limit $limit offset $start";
     } else {
         $campo = $_GET['searchField'];
       
         if ($_GET['searchOper'] == 'eq') {
-            $SQL = "SELECT id, razonSocial, nombreComercial, direccion, telefono, ruc, puntoEmision, establecimiento, email, autorizacion, ciudad,direccionEstablecimiento,obligacion,contribuyente FROM empresa WHERE $campo = '".$_GET['searchString']."' ORDER BY $sidx $sord limit $limit offset $start";
+            $SQL = "select ND.id, ND.idEmpresa, E.razonSocial,E.ciudad, ND.nroFactura, ND.nroNotaCredito, ND.nroNotaDebito, ND.nroRetencion, ND.nroGuia from nrodocumento ND inner join empresa E on ND.idEmpresa = E.id WHERE $campo = '".$_GET['searchString']."' ORDER BY $sidx $sord limit $limit offset $start";
         }         
         if ($_GET['searchOper'] == 'cn') {
-            $SQL = "SELECT id, razonSocial, nombreComercial, direccion, telefono, ruc, puntoEmision, establecimiento, email, autorizacion, ciudad,direccionEstablecimiento,obligacion,contribuyente FROM empresa WHERE $campo like '%$_GET[searchString]%' ORDER BY $sidx $sord limit $limit offset $start";
+            $SQL = "select ND.id, ND.idEmpresa, E.razonSocial,E.ciudad, ND.nroFactura, ND.nroNotaCredito, ND.nroNotaDebito, ND.nroRetencion, ND.nroGuia from nrodocumento ND inner join empresa E on ND.idEmpresa = E.id WHERE $campo like '%$_GET[searchString]%' ORDER BY $sidx $sord limit $limit offset $start";
         }
     }  
 
@@ -58,18 +58,12 @@
             $s .= "<row id='" . $row[0] . "'>";
             $s .= "<cell>" . $row[0] . "</cell>";
             $s .= "<cell>" . $row[1] . "</cell>";
-            $s .= "<cell>" . $row[2] . "</cell>";
-            $s .= "<cell>" . $row[3] . "</cell>";
+            $s .= "<cell>" . $row[2] . ' '.$row[3] . "</cell>";
             $s .= "<cell>" . $row[4] . "</cell>";
-            $s .= "<cell>" . $row[5] . "</cell>";            
+            $s .= "<cell>" . $row[5] . "</cell>";
             $s .= "<cell>" . $row[6] . "</cell>";            
-            $s .= "<cell>" . $row[7] . "</cell>";            
-            $s .= "<cell>" . $row[8] . "</cell>";
-            $s .= "<cell>" . $row[9] . "</cell>";
-            $s .= "<cell>" . $row[10] . "</cell>";
-            $s .= "<cell>" . $row[11] . "</cell>";
-            $s .= "<cell>" . $row[12] . "</cell>";
-            $s .= "<cell>" . $row[13] . "</cell>";
+            $s .= "<cell>" . $row[7] . "</cell>";                        
+            $s .= "<cell>" . $row[8] . "</cell>";   
             $s .= "</row>";
         }
     $s .= "</rows>";

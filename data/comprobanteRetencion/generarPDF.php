@@ -17,7 +17,7 @@
 	        $this->Cell(178, 5, 'Accion Imbaburapak', 0,0, 'R', 0);                                                             
 	        $this->Ln(7);
 	        $this->SetX(13);
-	        $this->RotatedImage('../../dist/fpdf/logo.fw.png', 30, 200, 200, 30, 45);                    
+	        $this->RotatedImage('../../dist/fpdf/logo.fw.png', 50, 150, 100, 80, 45);                    
 	        $this->SetX(0);            
 		}
 	    function Footer(){            
@@ -36,7 +36,7 @@
 		$ambiente = 'Pruebas';
 		$emision = 'Nomral';
 		$class = new constante();	
-		$sql = "select E.ruc, CR.numeroComprobante,CR.numeroAutorizacion, CR.fechaEmision, CR.claveAcceso, E.razonSocial, E.nombreComercial, E.direccion, E.direccionEstablecimiento, E.contribuyente, E.obligacion, C.razonSocial, C.identificacion, C.direccion, C.telefono, C.email, TC.nombre from comprobanteretencion CR inner join empresa E ON CR.idEmpresa = E.id inner join contribuyente C on CR.idContribuyente = C.id inner join tipocomprobante TC on  CR.idTipoComprobante = TC.id where CR.id = '".$id."'";
+		$sql = "select E.ruc, CR.numeroComprobante,CR.numeroAutorizacion, CR.fechaEmision, CR.claveAcceso, E.razonSocial, E.nombreComercial, E.direccion, E.direccionEstablecimiento, E.contribuyente, E.obligacion, C.razonSocial, C.identificacion, C.direccion, C.telefono, C.email, TC.nombre, CR.secuencial, CR.establecimiento, CR.puntoEmision, CR.fechaAutorizacion from comprobanteretencion CR inner join empresa E ON CR.idEmpresa = E.id inner join contribuyente C on CR.idContribuyente = C.id inner join tipocomprobante TC on  CR.idTipoComprobante = TC.id where CR.id = '".$id."'";
 		$sql = $class->consulta($sql);
 		while ($row = $class->fetch_array($sql)) {
 			$ruc = $row[0];
@@ -56,7 +56,18 @@
 			$telefono = $row[14];
 			$email = $row[15];
 			$tipoDocumento = $row[16];
+			$secuencial = $row[17];
+			$establecimiento = $row[18];
+			$puntoEmision = $row[19];
+			$fechaAut = $row[20];
 		}							
+		$ceros = 9;
+		$temp = '';
+		$tam = $ceros - strlen($secuencial);
+      	for ($i = 0; $i < $tam; $i++) {                 
+        	$temp = $temp .'0';        
+      	}
+      	$secuencial = $temp .''. $secuencial;
 
 		$pdf = new PDF('P','mm','a4');
 		$pdf->AddPage();
@@ -71,19 +82,19 @@
 		$pdf->Rect(3, 45, 100, 53 , 'D');//2 datos personales
 		$pdf->Text(108, 15, 'R U C :'. $ruc);//ruc		 	
 		$pdf->Text(108, 23, utf8_decode("Comprobante de Retención"));//tipo comprobante
-		$pdf->Text(108, 31, 'No. '. $numeroComprobante);//tipo comprobante
+		$pdf->Text(108, 31, 'No. '. $puntoEmision.'-'.$establecimiento.'-'.$secuencial);//tipo comprobante
 		$pdf->Text(108, 39, utf8_decode('NÚMERO DE AUTORIZACIÓN'));//nro autorizacion TEXT
 		$pdf->SetY(40);
 		$pdf->SetX(107);	
 		$pdf->Multicell(100, 5, $numeroAutorizacion,0);//nro autorizacion		
 		$pdf->Text(108, 55, utf8_decode('FECHA Y HORA DE AUTORIZACIÓN'));//fecha y hora de 	
-		$pdf->Text(108, 61, $fechaEmision);//FECHA
+		$pdf->Text(108, 61, $fechaAut);//FECHA
 		$pdf->Text(108, 68, utf8_decode('AMBIENTE: '.$ambiente));//ambiente
 		$pdf->Text(108, 75, utf8_decode('EMISIÓN: '.$emision));//tipo de emision
 		$pdf->Text(108, 81, utf8_decode('CLAVE DE ACCESO: '));//tipo de emision
 		$code_number = $claveAcceso;//////cpdigo de barras		
 		new barCodeGenrator($code_number,1,'temp.gif', 470, 60, true);///img codigo barras	
-		$pdf->Image('temp.gif',108,81,96,15);     	
+		$pdf->Image('temp.gif',108,83,96,15);     	
 
 		$pdf->Rect(106, 8, 102, 90 , 'D');//3 DATOS EMPRESA	 
 		$pdf->SetY(46);

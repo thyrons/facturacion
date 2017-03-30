@@ -76,7 +76,33 @@
     }
 
     function generarClave($fecha,$tipoComprobante,$ruc,$ambiente,$serie,$numeroDocumento,$fecha, $tipoEmision ){
+      $secuencia = '765432';      
+      $ceros = 9;      
+      $temp = '';
+      $tam = $ceros - strlen($numeroDocumento);
+      for ($i = 0; $i < $tam; $i++) {                 
+        $temp = $temp .'0';        
+      }
+      $numeroDocumento = $temp .''. $numeroDocumento;                  
+      $fechaT = explode('/', $fecha);    
+      $fecha = $fechaT[0].''.$fechaT[1].''.$fechaT[2];            
+      $clave = $fecha.''.$tipoComprobante.''.$ruc.''.$ambiente.''.$serie.''.$numeroDocumento.''.$fecha.''.$tipoEmision;      
+      $tamSecuencia = strlen($secuencia);
+      $ban = 0;
+      $inc = 0;
+      $sum = 0;
+      for ($i = 0; $i < strlen($clave); $i++) { 
+        $sum = $sum  + $clave[$i] * $secuencia[$ban + $inc];        
+        $inc++;
+        if($inc >= $tamSecuencia){
+          $inc = 0;
+        }
+      }            
+      $resp = $sum % 11;
+      $resp = 11 - $resp;      
 
-    }
+      $clave = $clave.$resp;      
+      return $clave;      
+    }    
   }  
 ?>
