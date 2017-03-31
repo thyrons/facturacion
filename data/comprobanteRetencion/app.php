@@ -8,6 +8,7 @@
 	include_once('../../admin/class.php');
 	include '../../admin/consultaSRI.php';	
 	include 'generarPDF.php';	
+	include 'generarXML.php';	
 	$class = new constante();	
 	$fecha = $class->fecha();	
 	//error_reporting(0);				
@@ -209,7 +210,8 @@
 				$clave = $class->generarClave($_POST['txt_9'],$codDoc,$ruc,$ambiente,$_POST['txt_7'].''.$_POST['txt_8'],$secuencialComprobante,$_POST['txt_9'],$emision);
 				$sql = "UPDATE comprobanteretencion SET claveAcceso = '".$clave."' where id = '".$id."'";				
 				$class->consulta($sql);	
-				generarPDF($id);
+				//generarPDF($id);
+				generarXML($id,$codDoc);
 			}
 		}				
 	}			
